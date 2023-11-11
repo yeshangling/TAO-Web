@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>我的旅游指南 - 上海</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        header {
+            background: #db3d44;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #f4f4f4 3px solid;
+        }
+
+        header h1 {
+            padding: 5px 0;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        #tabs {
+            margin-top: 20px;
+        }
+
+        .tab-button {
+            background-color: #db3d44;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .tab-button:hover {
+            background-color: #a32a2f;
+        }
+
+        .tab-content {
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .tab-button.active {
+            background-color: #a32a2f;
+        }
+    </style>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9GLLob8SZbGVkL2yUwQFj2qdZNY2aY54&callback=initMap">
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>宝宝的旅游指南</h1>
+        </div>
+    </header>
+
+    <div class="container content">
+        <h2>上海篇</h2>
+        
+        <div id="tabs">
+            <button class="tab-button" onclick="showContent('food')">美食</button>
+            <button class="tab-button" onclick="showContent('dessert')">甜品</button>
+            <button class="tab-button" onclick="showContent('shopping')">逛街</button>
+        </div>
+
+        <div id="food" class="tab-content">
+            <h3>美食</h3>
+            <p>上海的美食介绍...</p>
+            <div id="map" style="height: 1200px; width: 100%;"></div>
+        </div>
+        <div id="dessert" class="tab-content">
+            <h3>甜品</h3>
+            <p>上海的甜品介绍...</p>
+        </div>
+        <div id="shopping" class="tab-content">
+            <h3>逛街</h3>
+            <p>上海的购物介绍...</p>
+        </div>
+    </div>
+
+    <script>
+        function showContent(tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+        }
+    
+        function initMap() {
+            var shanghai = { lat: 31.2304, lng: 121.4737 };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: shanghai
+            });
+    
+            var locations = [
+                { lat: 31.221393865588215, lng: 121.45909129978999, info: "虞书欣同款韩餐", img: "https://i.imgur.com/7MFwyNr.jpg", address: "进贤路181号" },
+                // 可以继续添加更多地点...
+            ];
+    
+            locations.forEach(function(location) {
+                var marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map
+                });
+    
+                var infowindow = new google.maps.InfoWindow({
+                    content: '<div><h4>' + location.info + '</h4><img src="' + location.img + '" alt="地点图片" style="width:100px;"><p>' + location.address + '</p></div>'
+                });
+    
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
